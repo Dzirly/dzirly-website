@@ -721,18 +721,41 @@ function draw(now) {
 
 /* ========== WEATHER TICKER JAVASCRIPT ========== */
 const algerianCities = [
+  // Nord-Ouest
   { ar: 'الجزائر', fr: 'Alger', temp: 28, emoji: '☀️' },
   { ar: 'وهران', fr: 'Oran', temp: 26, emoji: '⛅' },
-  { ar: 'قسنطينة', fr: 'Constantine', temp: 25, emoji: '🌤️' },
-  { ar: 'عنابة', fr: 'Annaba', temp: 27, emoji: '☀️' },
-  { ar: 'الجيزة', fr: 'Giza', temp: 30, emoji: '🔥' },
-  { ar: 'بجاية', fr: 'Bejaia', temp: 24, emoji: '⛅' },
   { ar: 'تلمسان', fr: 'Tlemcen', temp: 23, emoji: '🌤️' },
-  { ar: 'سطيف', fr: 'Sétif', temp: 22, emoji: '☁️' },
-  { ar: 'تيزي وزو', fr: 'Tizi Ouzou', temp: 21, emoji: '☁️' },
+  { ar: 'سعيدة', fr: 'Saïda', temp: 22, emoji: '⛅' },
+  { ar: 'مستغانم', fr: 'Mostaganem', temp: 25, emoji: '⛅' },
+  { ar: 'عين تيموشنت', fr: 'Aïn Témouchent', temp: 24, emoji: '🌤️' },
+  
+  // Nord-Centre
+  { ar: 'تيپازة', fr: 'Tipaza', temp: 27, emoji: '☀️' },
   { ar: 'البليدة', fr: 'Blida', temp: 29, emoji: '☀️' },
   { ar: 'المدية', fr: 'Médéa', temp: 20, emoji: '⛅' },
+  { ar: 'الجلفة', fr: 'El Djelfa', temp: 19, emoji: '☁️' },
+  { ar: 'خنشلة', fr: 'Khenchela', temp: 18, emoji: '☁️' },
+  { ar: 'باتنة', fr: 'Batna', temp: 17, emoji: '☁️' },
+  
+  // Nord-Est
+  { ar: 'قسنطينة', fr: 'Constantine', temp: 25, emoji: '🌤️' },
+  { ar: 'عنابة', fr: 'Annaba', temp: 27, emoji: '☀️' },
+  { ar: 'سكيكدة', fr: 'Skikda', temp: 26, emoji: '⛅' },
+  { ar: 'جيجل', fr: 'Jijel', temp: 24, emoji: '⛅' },
+  { ar: 'بجاية', fr: 'Bejaia', temp: 24, emoji: '⛅' },
+  { ar: 'تيزي وزو', fr: 'Tizi Ouzou', temp: 21, emoji: '☁️' },
+  { ar: 'بوموردس', fr: 'Boumerdès', temp: 25, emoji: '⛅' },
+  { ar: 'سطيف', fr: 'Sétif', temp: 22, emoji: '🌤️' },
+  
+  // Centre
+  { ar: 'الأغواط', fr: 'Laghouat', temp: 28, emoji: '☀️' },
   { ar: 'بسكرة', fr: 'Biskra', temp: 32, emoji: '🔥' },
+  { ar: 'تيارت', fr: 'Tiaret', temp: 21, emoji: '🌤️' },
+  { ar: 'سيدي بلعباس', fr: 'Sidi Bel Abbès', temp: 24, emoji: '⛅' },
+  { ar: 'المسيلة', fr: 'M\'Sila', temp: 26, emoji: '☀️' },
+  { ar: 'شرشال', fr: 'Cherchell', temp: 25, emoji: '⛅' },
+  
+  // Sud
   { ar: 'غرداية', fr: 'Ghardaia', temp: 34, emoji: '🔥' },
   { ar: 'ورقلة', fr: 'Ouargla', temp: 35, emoji: '🔥' },
   { ar: 'تمنراست', fr: 'Tamanrasset', temp: 33, emoji: '🔥' },
@@ -740,14 +763,23 @@ const algerianCities = [
   { ar: 'إليزي', fr: 'Illizi', temp: 36, emoji: '🔥' },
   { ar: 'عين صالح', fr: 'Ain Salah', temp: 37, emoji: '🔥' },
   { ar: 'جانت', fr: 'Djanet', temp: 30, emoji: '☀️' },
-  { ar: 'الأغواط', fr: 'Laghouat', temp: 28, emoji: '☀️' },
+  { ar: 'أولاد جلال', fr: 'Oulad Djellal', temp: 31, emoji: '☀️' },
+  { ar: 'تقرت', fr: 'Touggourt', temp: 34, emoji: '🔥' },
+  { ar: 'حاسي مسعود', fr: 'Hassi Messaoud', temp: 32, emoji: '🔥' },
+  { ar: 'البيض', fr: 'El Bayadh', temp: 28, emoji: '☀️' },
+  { ar: 'ناحمة', fr: 'Naama', temp: 26, emoji: '⛅' },
+  { ar: 'بشار', fr: 'Béchar', temp: 29, emoji: '☀️' },
+  { ar: 'أوغلة', fr: 'Oum El Bouaghi', temp: 23, emoji: '🌤️' },
 ];
 
 function initWeatherTicker() {
   const tickerContent = document.getElementById('tickerContent');
-  if (!tickerContent) return;
+  if (!tickerContent) {
+    console.error('[WeatherTicker] ❌ Élément #tickerContent non trouvé');
+    return;
+  }
 
-  // Créer les items UNE FOIS
+  // Créer les items HTML
   let itemsHTML = '';
   algerianCities.forEach((city) => {
     itemsHTML += `
@@ -764,17 +796,20 @@ function initWeatherTicker() {
     `;
   });
 
-  // Dupliquer 3 fois pour une boucle fluide
+  // Dupliquer 3 fois pour une boucle fluide (sans vide)
   tickerContent.innerHTML = itemsHTML + itemsHTML + itemsHTML;
-  console.log('[WeatherTicker] ✅ Initialisé avec boucle fluide');
+  
+  console.log('[WeatherTicker] ✅ Initialisé avec ' + algerianCities.length + ' villes - Boucle infinie');
 }
+
+// Initialiser IMMÉDIATEMENT sans attendre
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initWeatherTicker);
 } else {
+  // DOM déjà chargé
   initWeatherTicker();
 }
-  
-document.getElementById('notifyForm').addEventListener('submit', function(e) {
+  document.getElementById('notifyForm').addEventListener('submit', function(e) {
   e.preventDefault();
   document.getElementById('confirm').classList.add('show');
   document.getElementById('emailInput').value = '';
