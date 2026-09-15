@@ -718,6 +718,62 @@ function draw(now) {
   requestAnimationFrame(draw);
 }
 
+
+/* ========== WEATHER TICKER JAVASCRIPT ========== */
+const algerianCities = [
+  { ar: 'الجزائر', fr: 'Alger', temp: 28, emoji: '☀️' },
+  { ar: 'وهران', fr: 'Oran', temp: 26, emoji: '⛅' },
+  { ar: 'قسنطينة', fr: 'Constantine', temp: 25, emoji: '🌤️' },
+  { ar: 'عنابة', fr: 'Annaba', temp: 27, emoji: '☀️' },
+  { ar: 'الجيزة', fr: 'Giza', temp: 30, emoji: '🔥' },
+  { ar: 'بجاية', fr: 'Bejaia', temp: 24, emoji: '⛅' },
+  { ar: 'تلمسان', fr: 'Tlemcen', temp: 23, emoji: '🌤️' },
+  { ar: 'سطيف', fr: 'Sétif', temp: 22, emoji: '☁️' },
+  { ar: 'تيزي وزو', fr: 'Tizi Ouzou', temp: 21, emoji: '☁️' },
+  { ar: 'البليدة', fr: 'Blida', temp: 29, emoji: '☀️' },
+  { ar: 'المدية', fr: 'Médéa', temp: 20, emoji: '⛅' },
+  { ar: 'بسكرة', fr: 'Biskra', temp: 32, emoji: '🔥' },
+  { ar: 'غرداية', fr: 'Ghardaia', temp: 34, emoji: '🔥' },
+  { ar: 'ورقلة', fr: 'Ouargla', temp: 35, emoji: '🔥' },
+  { ar: 'تمنراست', fr: 'Tamanrasset', temp: 33, emoji: '🔥' },
+  { ar: 'أدرار', fr: 'Adrar', temp: 31, emoji: '☀️' },
+  { ar: 'إليزي', fr: 'Illizi', temp: 36, emoji: '🔥' },
+  { ar: 'عين صالح', fr: 'Ain Salah', temp: 37, emoji: '🔥' },
+  { ar: 'جانت', fr: 'Djanet', temp: 30, emoji: '☀️' },
+  { ar: 'الأغواط', fr: 'Laghouat', temp: 28, emoji: '☀️' },
+];
+
+function initWeatherTicker() {
+  const tickerContent = document.getElementById('tickerContent');
+  if (!tickerContent) return;
+
+  algerianCities.forEach((city) => {
+    const item = document.createElement('div');
+    item.className = 'ticker-item';
+    item.innerHTML = `
+      <div class="ticker-city">
+        <div class="ticker-city-ar">${city.ar}</div>
+        <div class="ticker-city-fr">${city.fr}</div>
+      </div>
+      <div class="ticker-weather">
+        <span class="ticker-emoji">${city.emoji}</span>
+        <span class="ticker-temp">${city.temp}°</span>
+      </div>
+    `;
+    tickerContent.appendChild(item);
+  });
+
+  const originalItems = tickerContent.innerHTML;
+  tickerContent.innerHTML += originalItems;
+  console.log('[WeatherTicker] ✅ Initialisé');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initWeatherTicker);
+} else {
+  initWeatherTicker();
+}
+  
 document.getElementById('notifyForm').addEventListener('submit', function(e) {
   e.preventDefault();
   document.getElementById('confirm').classList.add('show');
