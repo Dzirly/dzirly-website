@@ -747,27 +747,27 @@ function initWeatherTicker() {
   const tickerContent = document.getElementById('tickerContent');
   if (!tickerContent) return;
 
+  // Créer les items UNE FOIS
+  let itemsHTML = '';
   algerianCities.forEach((city) => {
-    const item = document.createElement('div');
-    item.className = 'ticker-item';
-    item.innerHTML = `
-      <div class="ticker-city">
-        <div class="ticker-city-ar">${city.ar}</div>
-        <div class="ticker-city-fr">${city.fr}</div>
-      </div>
-      <div class="ticker-weather">
-        <span class="ticker-emoji">${city.emoji}</span>
-        <span class="ticker-temp">${city.temp}°</span>
+    itemsHTML += `
+      <div class="ticker-item">
+        <div class="ticker-city">
+          <div class="ticker-city-ar">${city.ar}</div>
+          <div class="ticker-city-fr">${city.fr}</div>
+        </div>
+        <div class="ticker-weather">
+          <span class="ticker-emoji">${city.emoji}</span>
+          <span class="ticker-temp">${city.temp}°</span>
+        </div>
       </div>
     `;
-    tickerContent.appendChild(item);
   });
 
-  const originalItems = tickerContent.innerHTML;
-  tickerContent.innerHTML += originalItems;
-  console.log('[WeatherTicker] ✅ Initialisé');
+  // Dupliquer 3 fois pour une boucle fluide
+  tickerContent.innerHTML = itemsHTML + itemsHTML + itemsHTML;
+  console.log('[WeatherTicker] ✅ Initialisé avec boucle fluide');
 }
-
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initWeatherTicker);
 } else {
